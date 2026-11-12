@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -17,7 +18,14 @@ export default function MoviesClientPage() {
   return (
     <main className="mx-auto w-full max-w-2xl p-8">
       <h1 className="text-3xl font-bold">Movies (client-rendered)</h1>
-      {movies === null ? <p className="mt-6" role="status">Loading movies...</p> : <MovieList movies={movies} />}
+
+      {movies === null ? (
+        <p className="mt-6" role="status">
+          Loading movies...
+        </p>
+      ) : (
+        <MovieList movies={movies} />
+      )}
     </main>
   );
 }

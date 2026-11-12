@@ -1,23 +1,29 @@
-"use client";
 
-import { useEffect, useState } from "react";
+import type { Metadata } from "next";
 import { MovieList } from "@/components/movie-list";
-import type { Movie } from "@/lib/movies";
+import { getMovies } from "@/lib/movies";
 
-export default function MoviesClientPage() {
-  const [movies, setMovies] = useState<Movie[] | null>(null);
+export const metadata: Metadata = {
+  title: "Movies | Movie Night",
+  description: "The movies you can vote for",
+};
 
-  useEffect(() => {
-    // Runs in the browser, after the page has loaded
-    fetch("/movies.json")
-      .then((res) => res.json())
-      .then((data: Movie[]) => setMovies(data));
-  }, []);
+export const dynamic = "force-dynamic";
+
+export default async function MoviesPage() {
+  const movies = await getMovies();
+
+  console.log(`[movies] rendered ${movies.length} movies`);
 
   return (
     <main className="mx-auto w-full max-w-2xl p-8">
-      <h1 className="text-3xl font-bold">Movies (client-rendered)</h1>
-      {movies === null ? <p className="mt-6" role="status">Loading movies...</p> : <MovieList movies={movies} />}
+      <h1 className="text-3xl font-bold">Movies</h1>
+
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        Rendered at {new Date().toISOString()}
+      </p>
+
+      <MovieList movies={movies} />
     </main>
   );
 }
